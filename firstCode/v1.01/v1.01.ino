@@ -2,7 +2,7 @@
 // Wed 18/10/2017
 
 bool connected=false;
-String response[32];
+char response[32];
 
 // Function to connect to the LoRa (PN) Network.
   bool conn()
@@ -28,12 +28,9 @@ String response[32];
   {
    int i;
    
-    //for (int i=0;i<32;i++)
-   // {
-   //   response[i]=0;
-   // }
-
-    char ch;
+    for (int i=0;i<32;i++)
+    {
+      char ch;
 
     do {
       ch=Serial5.read();
@@ -41,17 +38,49 @@ String response[32];
       if((ch!='\n') || (ch!='\r'))
       {
         response[i++]=ch;
+        
       }
     }while ((ch!='\n') && (i<31));
+    }
+    //string res = response[i];
 
-    
-    
-    return (response==expected); 
+  
   }
 
   bool reset()
   {
     Serial5.print("sys reset");
+    SerialUSB.println("system reset");
+    
+  }
+
+  bool send (int port, int data)
+  {
+    bool success=false;
+    String p="";
+    p = String(port, HEX);
+    //convert data to HEX
+    String d=""; 
+    d = String(data, HEX);
+
+    String cmd = "mac tx uncnf " + p + " " + d + "\r\n";
+
+    
+    if (check_response("ok"))
+    {
+      if (check_response("mac_tx_ok"))
+      {
+        success=true;
+        SerialUSB.println("successfully sent - mac tx " + p + " " + d);
+      }
+    }
+
+    if (success=false)
+    {
+      SerialUSB.println("failed to transmit");
+    }
+
+    return success;
     
   }
 
@@ -61,11 +90,17 @@ void setup() {
   SerialUSB.begin(9600);
 
   reset();
+  delay(6000);
   conn();  
+
+  //time_t t = time.now() + 60000;
 
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+
+  delay(10000);
+  
+  send(8, 2748);
 
 }
