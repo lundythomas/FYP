@@ -3,7 +3,7 @@
 
 #include "DHT.h"
 
-#define DHTPIN 2     // what digital pin we're connected to
+#define DHTPIN 5     // what digital pin we're connected to
 
 // Uncomment whatever type you're using!
 //#define DHTTYPE DHT11   // DHT 11
@@ -24,8 +24,9 @@
 DHT dht(DHTPIN, DHTTYPE);
 
 void setup() {
-  Serial.begin(9600);
-  Serial.println("DHTxx test!");
+  SerialUSB.begin(9600);
+  delay(3000);
+  SerialUSB.println("DHTxx test!");
 
   dht.begin();
 }
@@ -44,7 +45,7 @@ void loop() {
 
   // Check if any reads failed and exit early (to try again).
   if (isnan(h) || isnan(t) || isnan(f)) {
-    Serial.println("Failed to read from DHT sensor!");
+    SerialUSB.println("Failed to read from DHT sensor!");
     return;
   }
 
@@ -53,17 +54,17 @@ void loop() {
   // Compute heat index in Celsius (isFahreheit = false)
   float hic = dht.computeHeatIndex(t, h, false);
 
-  Serial.print("Humidity: ");
-  Serial.print(h);
-  Serial.print(" %\t");
-  Serial.print("Temperature: ");
-  Serial.print(t);
-  Serial.print(" *C ");
-  Serial.print(f);
-  Serial.print(" *F\t");
-  Serial.print("Heat index: ");
-  Serial.print(hic);
-  Serial.print(" *C ");
-  Serial.print(hif);
-  Serial.println(" *F");
+  SerialUSB.print("Humidity: ");
+  SerialUSB.print(h);
+  SerialUSB.print(" %\t");
+  SerialUSB.print("Temperature: ");
+  SerialUSB.print(t);
+  SerialUSB.print(" *C ");
+  SerialUSB.print(f);
+  SerialUSB.print(" *F\t");
+  SerialUSB.print("Heat index: ");
+  SerialUSB.print(hic);
+  SerialUSB.print(" *C ");
+  SerialUSB.print(hif);
+  SerialUSB.println(" *F");
 }

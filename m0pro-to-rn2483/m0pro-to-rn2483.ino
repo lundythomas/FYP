@@ -21,13 +21,7 @@ void setup() {
 
    SerialUSB.begin(57600);
    while (!SerialUSB);
-   SerialUSB.println("Serial relay running...");
-   SerialUSB.println("Don't type anything until a . appears");
-   SerialUSB.println("Note: you should then see the reset message: RN2483 0.9.5 Mar 24 14:15:33");
-   SerialUSB.println("Then try typing: 'sys reset$' and click the send key");
-   SerialUSB.println("Then enter: 'mac join otaa$");
-   SerialUSB.println("And then enter: 'mac tx uncnf 10 123456$");
-   SerialUSB.println("Note: the program converts $ to ^M^J");
+   
 
    pinMode(pin_led, OUTPUT);
    digitalWrite(pin_led, LOW);
