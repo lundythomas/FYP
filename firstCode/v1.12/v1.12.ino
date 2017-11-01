@@ -22,7 +22,7 @@ void connJoin()
   delay(2000);
   Serial5.print("mac join otaa\r\n");
 
-  if (checkResponse("ok"))
+  /*if (checkResponse("ok"))
   {
     if (checkResponse("accepted"))
     {
@@ -32,7 +32,7 @@ void connJoin()
   else
   {
     SerialUSB.println("You are not connected!");
-  }
+  }*/
 
   trigger = millis() + period;
 }
@@ -45,7 +45,7 @@ String sendData (int port, int data)
   d = String(data, HEX);
   String SendCmd = "mac tx uncnf " + p + " " + d + "\r\n";
   Serial5.print(SendCmd);
-  if (checkResponse("ok"))
+  /*if (checkResponse("ok"))
   {
     if (checkResponse("mac_tx_ok"))
     {
@@ -55,7 +55,7 @@ String sendData (int port, int data)
   else
   {
     SerialUSB.println("Data has NOT been sent!");
-  }
+  }*/
   return SendCmd;
 }
 

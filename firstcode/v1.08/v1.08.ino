@@ -2,7 +2,7 @@ unsigned char sending;
 int pin_reset=2;
 
 unsigned long trigger;
-unsigned long period=60000;
+unsigned long period=15000;
 
 void setup() {
 
