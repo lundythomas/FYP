@@ -10,6 +10,8 @@ String myPort = "10";  // Specify here which port you are using.
 unsigned long trigger;
 unsigned long period = 58000; // Period of Seconds x 1000 between sending data.
 String SendCmd = "";
+String tempInHex = "";
+String humInHex = "";
 
 void connJoin()
 {
@@ -25,11 +27,16 @@ void connJoin()
   trigger = millis() + period;
 }
 
-String sendData (String port, String data)
+String sendData (String port, String tempData, String humData)
 {
   String p = port;
-  String d = data;
-  String SendCmd = "mac tx uncnf " + p + " " + d + "\r\n";
+  String t = tempData;
+  String h = humData;
+  String combinedData = t + h;
+  //SerialUSB.println("hum is: " + h + ".  temp is: " + t + ".");
+  //SerialUSB.println("combined is : " + combinedData + '\n');
+
+  String SendCmd = "mac tx uncnf " + p + " " + combinedData + "\r\n";
   Serial5.print(SendCmd);
 
   return SendCmd;
@@ -46,29 +53,31 @@ void setup() {
   dht.begin();
   sensor_t sensor;
   dht.temperature().getSensor(&sensor);
+  dht.humidity().getSensor(&sensor);
   delayMS = sensor.min_delay / 1000;
 }
 
 void loop() {
 
-  String FtempInHex="";
+  String FtempInHex = "";
 
   if (millis() > trigger) {  //This sets a delay of x seconds between sendind data.
     sensors_event_t event;
+
     dht.temperature().getEvent(&event);
-    if (isnan(event.temperature)) {
-      SerialUSB.println("Error reading temperature!");
-    }
-    else {
-      float temperature = event.temperature;
-      int CtempInDec = temperature * 100;
-      String FtempInHex = String(CtempInDec, HEX);
-      sendData(myPort, FtempInHex);  //Sending specified port number and data.
-      trigger = millis() + period;
-    }
-    
+    float tempInFloat = event.temperature;
+    int tempInInt = tempInFloat * 100;
+    String tempInHex = String(tempInInt, HEX);
+
+    dht.humidity().getEvent(&event);
+    float humInFloat = event.relative_humidity;
+    int humInInt = humInFloat * 100;
+    String humInHex = String(humInInt, HEX);
+
+    sendData(myPort, tempInHex, humInHex);  //Sending specified port number and data.
+    trigger = millis() + period;
+
+
   }
   delay(delayMS);  // Delay between measurements.
 }
-
-

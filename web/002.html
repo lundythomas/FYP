@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<style>
+
+table, th, td {
+   border: 1px solid black;
+   text-align: center;
+}
+
+</style>
+
+<head>
+
+<meta charset="utf-8">
+
+	<title>Tom's test page</title>
+	<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+	<script type="text/javascript">
+	//<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+</head>
+
+<body>
+
+	<div align="center"><h1>Temperature Readings</h1></div>
+	
+	<div align="center">
+	<table>
+	<caption>Current & Average Temp <span>&#8451;</span></caption>
+		<tr><th>Current Temp <span>&#8451;</span></th><th>Avg Temp <span>&#8451;</span> (24hrs)</th></tr>
+		<tr><td id="tempShow"></td><td id="avgShow"></tr>
+	
+	</table>
+	</div>
+	
+	<br>
+	<br>
+
+    <script>
+    $(document).ready(getLatestData);
+	
+	function roundToTwo(num) {    
+    return +(Math.round(num + "e+2")  + "e-2");
+	}
+	setInterval(getLatestData, 5000);
+	
+	function getLatestData() {
+		$.getJSON("http://sbsrv1.cs.nuim.ie/lora/list.php?node=08-00-AA-00-C0-22-04-08&format=json", function(d) {
+			document.getElementById("tempShow").innerHTML = parseInt(d[0].data, 16)/100;
+		});
+		
+		var fromMidnightUrl = "http://sbsrv1.cs.nuim.ie/lora/list.php?node=08-00-AA-00-C0-22-04-08&format=json&since=%222017-11-11%0000:00:00%22";
+		
+		$.getJSON(fromMidnightUrl, function(x)  {
+		var len = x.length;
+		var sum1 = 0;
+		var total= 0;
+		
+			for (var i=0; i<len;i++)
+			{
+				sum1 = parseInt(x[i].data, 16);
+				total = total + (sum1/100);
+			}
+			var avg = total/len;
+			document.getElementById("avgShow").innerHTML = roundToTwo(avg);
+		});
+		
+			}
+			
+		<!------------------------------------------------------------------------------------------------->
+
+		var dataPoints = [];
+		
+		$.getJSON("http://sbsrv1.cs.nuim.ie/lora/list.php?node=08-00-AA-00-C0-22-04-08&format=json&since=%222017-11-11%0000:00:00%22", function(z) {  
+			var zlen = z.length;
+			for (var i=0; i<zlen;i++){
+				dataPoints.push({x: Date.parse(z[i].ts)/10000, y: parseInt(z[i].data, 16)/100});
+			}
+			
+			var chart = new CanvasJS.Chart("chartContainer",{
+				title:{
+					text:"Temperature over the last 24hrs"
+				},
+				axisY:{
+				maximum: 40,
+				interval: 2,
+				},
+				axisX:{
+				interval: 500,
+				},
+				data: [{
+				type: "line",
+					dataPoints : dataPoints,
+				}]
+			});
+			chart.render();
+		});
+					
+    </script>
+	
+	<br>
+	<br>
+	
+	<div id="chartContainer" style="height: 300px; width: auto;"></div>
+	
+	<div id="v"></div>
+	
+</body>
