@@ -3,12 +3,14 @@
 
 <style>
 
-table, th, td {
+table, th, td 
+{
    border: 1px solid white;
    text-align: center;
 }
 
-html, body {
+html, body 
+{
   background-color: #5F7462;
   width: 100%;
   height: 100%;
@@ -31,29 +33,31 @@ html, body {
 
 <body>
 
-	<div align="center"><h1>Temperature Humidity</h1></div>
-	
 	<div align="center">
-	<table>
-		
-		<tr><th>Current Temp &#8451;</th><th>Current Humidity &#37;</th></tr>
-		
-		<tr><td id="tempShow"></td><td id="humShow"></tr>
-		
-		<tr><th colspan="2">Data Collected on: </th></tr>
-		
-		<tr><td id ="timeCollected"colspan="2"></td></tr>
 	
-	</table>
+		<h1>Temperature Humidity</h1>
+	
 	</div>
 	
-	<br>
-	<br>
+	<div align="center">
+		<table>
+			
+			<tr><th>Current Temp &#8451;</th><th>Current Humidity &#37;</th></tr>
+			
+			<tr><td id="tempShow"></td><td id="humShow"></tr>
+			
+			<tr><th colspan="2">Data Collected on: </th></tr>
+			
+			<tr><td id ="timeCollected"colspan="2"></td></tr>
+		
+		</table>
+	</div>
 
     <script>
 	
-	function roundToTwo(num) {    
-    return +(Math.round(num + "e+2")  + "e-2");
+	function roundToTwo(num) 
+	{    
+		return +(Math.round(num + "e+2")  + "e-2");
 	}
 	
 	var latestTime;
@@ -61,8 +65,10 @@ html, body {
 	
     $(document).ready(getLatestData);
 	
-	function getLatestData() {
-		$.getJSON("http://sbsrv1.cs.nuim.ie/lora/list.php?node=08-00-AA-00-C0-22-04-08&format=json", function(l) {
+	function getLatestData() 
+	{
+		$.getJSON("http://sbsrv1.cs.nuim.ie/lora/list.php?node=08-00-AA-00-C0-22-04-08&format=json", function(l) 
+		{
 			
 			latestTime = l[0].ts;
 			var latestData = l[0].data;
@@ -78,7 +84,6 @@ html, body {
 				var tempNew1 = latestData.substring(0, 4);
 				var humNew1 = latestData.substring(4, 8);
 			}
-			
 			else
 			{
 				console.log("There is something wrong with your data array length");
@@ -87,17 +92,16 @@ html, body {
 			var currTemp1 = (parseInt(tempNew1, 16)/100);
 			var currHum1 = (parseInt(humNew1, 16)/100);
 				
-			console.log(latestTime+ " " + currTemp1 + " " + currHum1);
-				
 			document.getElementById("tempShow").innerHTML = roundToTwo(currTemp1);
 			document.getElementById("humShow").innerHTML = roundToTwo(currHum1);
-			document.getElementById("timeCollected").innerHTML = latestTime;
-			
-	});
+			document.getElementById("timeCollected").innerHTML = latestTime;	
+		});
 	}
 	
-	function updateData() {
-		$.getJSON("http://sbsrv1.cs.nuim.ie/lora/list.php?node=08-00-AA-00-C0-22-04-08&format=json&since"+latestTime, function(u) {
+	function updateData() 
+	{
+		$.getJSON("http://sbsrv1.cs.nuim.ie/lora/list.php?node=08-00-AA-00-C0-22-04-08&format=json&since"+latestTime, function(u) 
+		{
 			
 			updatedData = u[0].data;
 			var updatedTime =  u[0].ts;
@@ -121,9 +125,6 @@ html, body {
 			
 			var currTemp2 = (parseInt(tempNew2, 16)/100);
 			var currHum2 = (parseInt(humNew2, 16)/100);
-			
-			console.log(updatedTime + " " + currTemp2 + " " + currHum2);
-			console.log(u[0].data.length);
 			
 			document.getElementById("tempShow").innerHTML = roundToTwo(currTemp2);
 			document.getElementById("humShow").innerHTML = roundToTwo(currHum2);
