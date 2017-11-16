@@ -73,7 +73,7 @@ table, th, td {
 
 		var dataPoints = [];
 		
-		$.getJSON("http://sbsrv1.cs.nuim.ie/lora/list.php?node=08-00-AA-00-C0-22-04-08&format=json&since=%222017-11-11%0000:00:00%22", function(z) {  
+		$.getJSON("http://sbsrv1.cs.nuim.ie/lora/list.php?node=08-00-AA-00-C0-22-04-08&format=json&since=%222017-11-15%0000:00:00%22", function(z) {  
 			var zlen = z.length;
 			for (var i=0; i<zlen;i++){
 				dataPoints.push({x: Date.parse(z[i].ts)/10000, y: parseInt(z[i].data, 16)/100});
