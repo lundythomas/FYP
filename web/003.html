@@ -102,13 +102,14 @@ html, body {
 			updatedData = u[0].data;
 			var updatedTime =  u[0].ts;
 			latestTime = updatedTime;
+			var len2 = l[0].data.length;
 			
-			if (len==6)
+			if (len2==6)
 			{
 				var tempNew2 = updatedData.substring(0, 3);
 				var humNew2 = updatedData.substring(3, 7);
 			}
-			else if (len==8)
+			else if (len2==8)
 			{
 				var tempNew2 = updatedData.substring(0, 4);
 				var humNew2 = updatedData.substring(4, 8);
