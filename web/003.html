@@ -39,8 +39,8 @@ html, body
 	
 	</div>
 	
-	<div align="center">
-		<table>
+	<div align="center"> 
+		<table>  <!-- Table to show current temperature and humidity. -->
 			
 			<tr><th>Current Temp &#8451;</th><th>Current Humidity &#37;</th></tr>
 			
@@ -55,7 +55,7 @@ html, body
 
     <script>
 	
-	function roundToTwo(num) 
+	function roundToTwo(num) // function that rounds to two decimal points.
 	{    
 		return +(Math.round(num + "e+2")  + "e-2");
 	}
@@ -65,7 +65,7 @@ html, body
 	
     $(document).ready(getLatestData);
 	
-	function getLatestData() 
+	function getLatestData() //functaion that retrives the lastest data from the db.
 	{
 		$.getJSON("http://sbsrv1.cs.nuim.ie/lora/list.php?node=08-00-AA-00-C0-22-04-08&format=json", function(l) 
 		{
@@ -74,12 +74,12 @@ html, body
 			var latestData = l[0].data;
 			var len = l[0].data.length;
 			
-			if (len==6)
+			if (len==6)  // This separates the data into the temp and humidity.
 			{
 				var tempNew1 = latestData.substring(0, 3);
 				var humNew1 = latestData.substring(3, 7);
 			}
-			else if (len==8)
+			else if (len==8) //This is for when the temp and or humidity are above a certain figure.
 			{
 				var tempNew1 = latestData.substring(0, 4);
 				var humNew1 = latestData.substring(4, 8);
@@ -98,22 +98,22 @@ html, body
 		});
 	}
 	
-	function updateData() 
+	function updateData() // Function that updates the data by retriving only the lastest data from the previous time.
 	{
 		$.getJSON("http://sbsrv1.cs.nuim.ie/lora/list.php?node=08-00-AA-00-C0-22-04-08&format=json&since"+latestTime, function(u) 
 		{
 			
 			updatedData = u[0].data;
 			var updatedTime =  u[0].ts;
-			latestTime = updatedTime;
+			latestTime = updatedTime;  // sets the most updated time to the lastest time.
 			var len2 = u[0].data.length;
 			
-			if (len2==6)
+			if (len2==6) // This separates the data into the temp and humidity.
 			{
 				var tempNew2 = updatedData.substring(0, 3);
 				var humNew2 = updatedData.substring(3, 7);
 			}
-			else if (len2==8)
+			else if (len2==8) //This is for when the temp and or humidity are above a certain figure.
 			{
 				var tempNew2 = updatedData.substring(0, 4);
 				var humNew2 = updatedData.substring(4, 8);
@@ -133,7 +133,7 @@ html, body
 		});	
 	}
 	
-	setInterval(updateData, 10000);
+	setInterval(updateData, 10000);  // Interval of 10 seconds between updating data.
 	
     </script>
 	
