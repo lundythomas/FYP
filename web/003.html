@@ -100,7 +100,7 @@ html, body
 	
 	function updateData() // Function that updates the data by retriving only the lastest data from the previous time.
 	{
-		$.getJSON("http://sbsrv1.cs.nuim.ie/lora/list.php?node=08-00-AA-00-C0-22-04-08&format=json&since="+latestTime, function(u) 
+		$.getJSON("http://sbsrv1.cs.nuim.ie/lora/list.php?node=08-00-AA-00-C0-22-04-08&format=json&since"+latestTime, function(u) 
 		{
 			
 			updatedData = u[0].data;
