@@ -12,6 +12,7 @@
   "uploadOnSave": true,
   "watch":[
     "/web/index.html",
-    "/web/style1.css"
+    "/web/style1.css",
+    "/web/jsScripts.js"
   ]
 }
