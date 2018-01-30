@@ -24,113 +24,21 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-lg-12">
       <h3>Temperature - Office</h3>
-      <div id="tempShow"></div>
-      <div id ="timeCollected"></div>
-
+      <div id="test1"></div>
     </div>
-    <div class="col-md-6">
-      <h3>Temperature - Home</h3>
-      <p>This is where I will show the temp from home</p>
-      <p>dfsafdsafasfsafas</p>
-    </div>
-    <div class="col-md-6">
+    <div class="col-lg-12">
       <h3>Humidity - Office</h3>
-      <div id="humShow"></div>
-      <div id ="timeCollected"><p>Time of collection</p></div>
+      <div id="test2"></div>
+      <div></div>
     </div>
-    <div class="col-md-6">
-      <h3>Humidity - Home</h3>
-      <p>fook</p>
-      <p>dddddddddddddddddd</p>
+    <div class="col-lg-12">
+      <h3>Time Collected</h3>
+      <div id ="timeCollected"></div>
     </div>
   </div>
 </div>
-
-<script>
-
-function roundToTwo(num) // function that rounds to two decimal points.
-{
-return +(Math.round(num + "e+2")  + "e-2");
-}
-
-var latestTime;
-var updatedData;
-
-$(document).ready(getLatestData);
-
-function getLatestData() //functaion that retrives the lastest data from the db.
-{
-$.getJSON("http://sbsrv1.cs.nuim.ie/lora/list.php?node=08-00-AA-00-C0-22-04-08&format=json", function(l)
-{
-
-  latestTime = l[0].ts;
-  var latestData = l[0].data;
-  var len = l[0].data.length;
-
-  if (len==6)  // This separates the data into the temp and humidity.
-  {
-    var tempNew1 = latestData.substring(0, 3);
-    var humNew1 = latestData.substring(3, 7);
-  }
-  else if (len==8) //This is for when the temp and or humidity are above a certain figure.
-  {
-    var tempNew1 = latestData.substring(0, 4);
-    var humNew1 = latestData.substring(4, 8);
-  }
-  else
-  {
-    console.log("There is something wrong with your data array length");
-  }
-
-  var currTemp1 = (parseInt(tempNew1, 16)/100);
-  var currHum1 = (parseInt(humNew1, 16)/100);
-
-  document.getElementById("tempShow").innerHTML = roundToTwo(currTemp1);
-  document.getElementById("humShow").innerHTML = roundToTwo(currHum1);
-  document.getElementById("timeCollected").innerHTML = latestTime;
-});
-}
-
-function updateData() // Function that updates the data by retriving only the lastest data from the previous time.
-{
-$.getJSON("http://sbsrv1.cs.nuim.ie/lora/list.php?node=08-00-AA-00-C0-22-04-08&format=json&since"+latestTime, function(u)
-{
-
-  updatedData = u[0].data;
-  var updatedTime =  u[0].ts;
-  latestTime = updatedTime;  // sets the most updated time to the lastest time.
-  var len2 = u[0].data.length;
-
-  if (len2==6) // This separates the data into the temp and humidity.
-  {
-    var tempNew2 = updatedData.substring(0, 3);
-    var humNew2 = updatedData.substring(3, 7);
-  }
-  else if (len2==8) //This is for when the temp and or humidity are above a certain figure.
-  {
-    var tempNew2 = updatedData.substring(0, 4);
-    var humNew2 = updatedData.substring(4, 8);
-  }
-  else
-  {
-    console.log("There is something wrong with your data array length");
-  }
-
-  var currTemp2 = (parseInt(tempNew2, 16)/100);
-  var currHum2 = (parseInt(humNew2, 16)/100);
-
-  document.getElementById("tempShow").innerHTML = roundToTwo(currTemp2);
-  document.getElementById("humShow").innerHTML = roundToTwo(currHum2);
-  document.getElementById("timeCollected").innerHTML = updatedTime;
-
-});
-}
-
-setInterval(updateData, 10000);  // Interval of 10 seconds between updating data.
-
-</script>
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
    <script type="text/javascript">
@@ -142,7 +50,7 @@ setInterval(updateData, 10000);  // Interval of 10 seconds between updating data
 
         var data = google.visualization.arrayToDataTable([
           ['Label', 'Value'],
-          ['Temp', 80],
+          ['Temp', 10],
         ]);
 
         var options = {
@@ -153,7 +61,7 @@ setInterval(updateData, 10000);  // Interval of 10 seconds between updating data
           minorTicks: 5, max: 50
         };
 
-        var chart = new google.visualization.Gauge(document.getElementById('chart_div_temp'));
+        var chart = new google.visualization.Gauge(document.getElementById('test1'));
 
         chart.draw(data, options);
 
@@ -163,7 +71,7 @@ setInterval(updateData, 10000);  // Interval of 10 seconds between updating data
 
         var data = google.visualization.arrayToDataTable([
           ['Label', 'Value'],
-          ['Temp', 80],
+          ['Humidity', 80],
         ]);
 
         var options = {
@@ -174,20 +82,99 @@ setInterval(updateData, 10000);  // Interval of 10 seconds between updating data
           minorTicks: 5, max: 100
         };
 
-        var chart = new google.visualization.Gauge(document.getElementById('chart_div_hum'));
+        var chart = new google.visualization.Gauge(document.getElementById('test2'));
 
         chart.draw(data, options);
 
       }
-    </script>
+</script>
 
-    <div id="chart_div_temp" style="width: 400px; height: 120px;"></div>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-    <div id="chart_div_hum" style="width: 400px; height: 120px;"></div>
+<script>
+
+      var latestTime;
+      var updatedData;
+      var tempNew1;
+      var humNew1;
+      var currTemp1;
+      var currHum1;
+
+      function roundToTwo(num) // function that rounds to two decimal points.
+      {
+      return +(Math.round(num + "e+2")  + "e-2");
+      }
+
+      $(document).ready(getLatestData);
+
+      function getLatestData() //functaion that retrives the lastest data from the db.
+      {
+      $.getJSON("http://sbsrv1.cs.nuim.ie/lora/list.php?node=08-00-AA-00-C0-22-04-08&format=json", function(l)
+      {
+
+        latestTime = l[0].ts;
+        var latestData = l[0].data;
+        var len = l[0].data.length;
+
+        if (len==6)  // This separates the data into the temp and humidity.
+        {
+          var tempNew1 = latestData.substring(0, 3);
+          var humNew1 = latestData.substring(3, 7);
+        }
+        else if (len==8) //This is for when the temp and or humidity are above a certain figure.
+        {
+          var tempNew1 = latestData.substring(0, 4);
+          var humNew1 = latestData.substring(4, 8);
+        }
+        else
+        {
+          console.log("There is something wrong with your data array length");
+        }
+
+        var currTemp1 = (parseInt(tempNew1, 16)/100);
+        var currHum1 = (parseInt(humNew1, 16)/100);
+
+        //document.getElementById("tempShow").innerHTML = roundToTwo(currTemp1);
+        //document.getElementById("humShow").innerHTML = roundToTwo(currHum1);
+        document.getElementById("timeCollected").innerHTML = latestTime;
+
+      });
+      }
+
+      function updateData() // Function that updates the data by retriving only the lastest data from the previous time.
+      {
+      $.getJSON("http://sbsrv1.cs.nuim.ie/lora/list.php?node=08-00-AA-00-C0-22-04-08&format=json&since"+latestTime, function(u)
+      {
+        updatedData = u[0].data;
+        var updatedTime =  u[0].ts;
+        latestTime = updatedTime;  // sets the most updated time to the lastest time.
+        var len2 = u[0].data.length;
+
+        if (len2==6) // This separates the data into the temp and humidity.
+        {
+          var tempNew2 = updatedData.substring(0, 3);
+          var humNew2 = updatedData.substring(3, 7);
+        }
+        else if (len2==8) //This is for when the temp and or humidity are above a certain figure.
+        {
+          var tempNew2 = updatedData.substring(0, 4);
+          var humNew2 = updatedData.substring(4, 8);
+        }
+        else
+        {
+          console.log("There is something wrong with your data array length");
+        }
+
+        var currTemp2 = (parseInt(tempNew2, 16)/100);
+        var currHum2 = (parseInt(humNew2, 16)/100);
+
+        //document.getElementById("tempShow").innerHTML = roundToTwo(currTemp2);
+        //document.getElementById("humShow").innerHTML = roundToTwo(currHum2);
+        document.getElementById("timeCollected").innerHTML = updatedTime;
+
+      });
+      }
+
+      setInterval(updateData, 10000);  // Interval of 10 seconds between updating data.
+    </script>
 
 </body>
 
