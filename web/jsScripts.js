@@ -9,6 +9,8 @@ var currTemp1;
 var currHum1;
 var currTemp2;
 var currHum2;
+var degrees ="&#8451;";
+var percent = "&#37;";
 
 google.charts.load('current', {'packages':['gauge']});
 google.charts.setOnLoadCallback(updateData);
@@ -18,7 +20,7 @@ function roundToTwo(num) // function that rounds to two decimal points.
   return +(Math.round(num + "e+2")  + "e-2");
 }
 
-$(document).ready(getLatestData);
+//$(document).ready(getLatestData);
 
 function getLatestData() //functaion that retrives the lastest data from the db.
 {
@@ -27,7 +29,7 @@ function getLatestData() //functaion that retrives the lastest data from the db.
     latestTime = l[0].ts;
     var latestData = l[0].data;
     var len = l[0].data.length;
-    
+
     if (len==6)  // This separates the data into the temp and humidity.
     {
       var tempNew1 = latestData.substring(0, 3);
@@ -49,10 +51,9 @@ function getLatestData() //functaion that retrives the lastest data from the db.
     currTemp1 = roundToTwo(currTemp1);
     currHum1 = roundToTwo(currHum1);
 
-    //document.getElementById("tempShow").innerHTML = roundToTwo(currTemp1);
-    //document.getElementById("humShow").innerHTML = roundToTwo(currHum1);
+    document.getElementById("test1.1").innerHTML = roundToTwo(currTemp1) + " " + degrees;
+    document.getElementById("test2.2").innerHTML = roundToTwo(currHum1) + " " + percent;;
     document.getElementById("timeCollected").innerHTML = latestTime;
-
   });
 }
 
@@ -83,8 +84,8 @@ function updateData() // Function that updates the data by retriving only the la
     currTemp2 = (parseInt(tempNew2, 16)/100);
     currHum2 = (parseInt(humNew2, 16)/100);
 
-    //document.getElementById("tempShow").innerHTML = roundToTwo(currTemp2);
-    //document.getElementById("humShow").innerHTML = roundToTwo(currHum2);
+    document.getElementById("test1.1").innerHTML = roundToTwo(currTemp2) + " " + degrees;
+    document.getElementById("test2.2").innerHTML = roundToTwo(currHum2) + " " + percent;;
     document.getElementById("timeCollected").innerHTML = updatedTime;
 
     currTemp2 = roundToTwo(currTemp2);
@@ -100,7 +101,7 @@ function updateData() // Function that updates the data by retriving only the la
       redFrom: 35, redTo: 50,
       yellowFrom:30, yellowTo: 35,
       greenFrom: 15, greenTo: 30,
-      minorTicks: 5, max: 50
+      minorTicks: 5, max: 50, min: -10
     };
 
     var chart = new google.visualization.Gauge(document.getElementById('test1'));

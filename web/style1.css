@@ -1,3 +1,23 @@
 body {
     background-color: #008B8B;
+    height: 1000px;
+}
+
+.myFooter {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   background-color: grey;
+   color: white;
+   text-align: center;
+}
+
+.con {
+  border: 1px solid white;
+  width: 50%;
+  position: relative;
+  left: auto;
+  right:auto;
+  text-align: center;
 }
