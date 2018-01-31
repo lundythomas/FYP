@@ -30,7 +30,7 @@ function getLatestData() //functaion that retrives the lastest data from the db.
 {
   $.getJSON("http://sbsrv1.cs.nuim.ie/lora/list.php?node=08-00-AA-00-C0-22-04-08&format=json", function(l)
   {
-    console.log("fun1");
+    //console.log("fun1");
     latestUid = l[0].uid;
     latestTime = l[0].ts;
     var latestData = l[0].data;
@@ -102,7 +102,7 @@ function updateData() // Function that updates the data by retriving only the la
 {
   $.getJSON("http://sbsrv1.cs.nuim.ie/lora/list.php?node=08-00-AA-00-C0-22-04-08&format=json&since"+latestTime, function(u)
   {
-    console.log("fun2");
+    //console.log("fun2");
     updatedData = u[0].data;
     updatedTime =  u[0].ts;
     latestTime = updatedTime;  // sets the most updated time to the lastest time.
