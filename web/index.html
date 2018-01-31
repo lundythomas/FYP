@@ -6,13 +6,22 @@
     <title>test -FYP Webpage</title>
 
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style1.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <!-- below are for bootstrap-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js" integrity="sha384-feJI7QwhOS+hwpX2zkaeJQjeiwlhOP+SdQDqhgvvo1DsjtiSQByFdThsxO669S2D" crossorigin="anonymous"></script>
+
+    <!-- The Link below is for google charts-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <!-- below is my own css stylesheet for custom style-->
+    <link rel="stylesheet" href="style1.css">
+
+    <!-- below is my own javascript file that contains functions etc.-->
     <script type="text/javascript" src="jsScripts.js"></script>
 
   </head>
@@ -21,28 +30,53 @@
 
   <div class="jumbotron text-center">
       <h1>IoT Sensor Reading with LoRa</h1>
-      <h1>Temperature & Humidity Readings</h1>
+  </div>
+<div class="col-lg-12">
+      <div id="myTable" class="table">
+        <table align="center">
+
+          <tr>
+              <th colspan="3"><h1>Readings from CS Lab</h1></th>
+          </tr>
+          <tr>
+              <th><h1>Current Temp</h1></th><td class="cons" id="test1"></td><td class="h1" id="test1.1" style="color:white;"></td>
+          </tr>
+
+          <tr>
+              <th><h1>Current Humidity</h1></th><td class="cons" id="test2"></td><td class="h1" id="test2.2" style="color:white;"></td>
+          </tr>
+
+          <tr>
+              <th><h1>Time Data Collected:</h1></th><td colspan="2" class="h1" style="color:white;" id ="timeCollected"></td>
+          </tr>
+
+        </table>
+      </div>
+</div>
+
+  <br>
+  <br>
+  <div class="row align-items-center justify-content-center" align="center">
+      <div class="col">
+          <h2>Analyse the Data:</h2>
+          <button type="button" class="btn btn-primary">Temp data from last 12Hrs</button>
+          <button type="button" class="btn btn-primary">Humidity data from last 12Hrs</button>
+
+      </div>
   </div>
 
-<div id="myTable">
-  <table align="center">
+    <br>
 
-    <tr>
-        <th colspan="3"><h1>Readings from CS Lab</h1></th>
-    </tr>
-    <tr>
-        <th><h1>Currnet Temp</h1></th><td class="cons" id="test1"></td><td class="h1" id="test1.1" style="color:white;"></td>
-    </tr>
+  <div class="col-lg-12">
+      <div id="chart_temp1" class="chart"></div>
+  </div>
 
-    <tr>
-        <th><h1>Current Humidity</h1></th><td class="cons" id="test2"></td><td class="h1" id="test2.2" style="color:white;"></td>
-    </tr>
+  <div class="col-lg-12">
+      <div id="chart_hum1" class="chart"></div>
+  </div>
 
-    <tr>
-        <th><h1>Time Data Collected:</h1></th><td colspan="2" class="h1" style="color:white;" id ="timeCollected"></td>
-    </tr>
-
-  </table>
+  <br>
+  <br>
 
 <div class="myFooter">
   <p>Thomas Lundy - CSSE Final Year Project - 2018 - Maynooth University</p>

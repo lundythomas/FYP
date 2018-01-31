@@ -11,9 +11,13 @@ var currTemp2;
 var currHum2;
 var degrees ="&#8451;";
 var percent = "&#37;";
+var latestUid;
 
 google.charts.load('current', {'packages':['gauge']});
+google.charts.setOnLoadCallback(getLatestData);
 google.charts.setOnLoadCallback(updateData);
+google.charts.load('current', {packages: ['corechart', 'line']});
+//google.charts.setOnLoadCallback(chartFun);
 
 function roundToTwo(num) // function that rounds to two decimal points.
 {
@@ -26,6 +30,8 @@ function getLatestData() //functaion that retrives the lastest data from the db.
 {
   $.getJSON("http://sbsrv1.cs.nuim.ie/lora/list.php?node=08-00-AA-00-C0-22-04-08&format=json", function(l)
   {
+    console.log("fun1");
+    latestUid = l[0].uid;
     latestTime = l[0].ts;
     var latestData = l[0].data;
     var len = l[0].data.length;
@@ -54,6 +60,41 @@ function getLatestData() //functaion that retrives the lastest data from the db.
     document.getElementById("test1.1").innerHTML = roundToTwo(currTemp1) + " " + degrees;
     document.getElementById("test2.2").innerHTML = roundToTwo(currHum1) + " " + percent;;
     document.getElementById("timeCollected").innerHTML = latestTime;
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    var data = google.visualization.arrayToDataTable([
+      ['Label', 'Value'],
+      ['Temp', currTemp1],
+    ]);
+
+    var options = {
+      width: 400, height: 120,
+      redFrom: 30, redTo: 50,
+      yellowFrom: 25, yellowTo: 30,
+      greenFrom: 15, greenTo: 25,
+      minorTicks: 5, max: 50, min: -10
+    };
+
+    var chart = new google.visualization.Gauge(document.getElementById('test1'));
+
+    chart.draw(data, options);
+    /////////////////////////////////////////////////////////////////////////////////////
+    var data = google.visualization.arrayToDataTable([
+      ['Label', 'Value'],
+      ['Humidity', currHum1],
+    ]);
+
+    var options = {
+      width: 400, height: 120,
+      redFrom: 80, redTo: 100,
+      yellowFrom:60, yellowTo: 80,
+      greenFrom: 0, greenTo: 60,
+      minorTicks: 5, max: 100
+    };
+
+    var chart = new google.visualization.Gauge(document.getElementById('test2'));
+
+    chart.draw(data, options);
   });
 }
 
@@ -61,6 +102,7 @@ function updateData() // Function that updates the data by retriving only the la
 {
   $.getJSON("http://sbsrv1.cs.nuim.ie/lora/list.php?node=08-00-AA-00-C0-22-04-08&format=json&since"+latestTime, function(u)
   {
+    console.log("fun2");
     updatedData = u[0].data;
     updatedTime =  u[0].ts;
     latestTime = updatedTime;  // sets the most updated time to the lastest time.
@@ -93,14 +135,14 @@ function updateData() // Function that updates the data by retriving only the la
     ////////////////////////////////////////////////////////////////////////////////////
     var data = google.visualization.arrayToDataTable([
       ['Label', 'Value'],
-      ['Temp', currTemp2], 
+      ['Temp', currTemp2],
     ]);
 
     var options = {
       width: 400, height: 120,
-      redFrom: 35, redTo: 50,
-      yellowFrom:30, yellowTo: 35,
-      greenFrom: 15, greenTo: 30,
+      redFrom: 30, redTo: 50,
+      yellowFrom: 25, yellowTo: 30,
+      greenFrom: 15, greenTo: 25,
       minorTicks: 5, max: 50, min: -10
     };
 
@@ -128,3 +170,42 @@ function updateData() // Function that updates the data by retriving only the la
 }
 
 setInterval(updateData, 10000);  // Interval of 10 seconds between updating data.
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+function chartFun() {
+
+
+      var data = new google.visualization.DataTable();
+      data.addColumn('number', 'X');
+      data.addColumn('number', 'Temp');
+
+      data.addRows([
+        [0, 0],   [1, 10],  [2, 23],  [3, 17],  [4, 18],  [5, 9],
+        [6, 11],  [7, 27],  [8, 33],  [9, 40],  [10, 32], [11, 35],
+        [12, 30], [13, 40], [14, 42], [15, 47], [16, 44], [17, 48],
+        [18, 52], [19, 54], [20, 42], [21, 55], [22, 56], [23, 57],
+        [24, 60], [25, 50], [26, 52], [27, 51], [28, 49], [29, 53],
+        [30, 55], [31, 60], [32, 61], [33, 59], [34, 62], [35, 65],
+        [36, 62], [37, 58], [38, 55], [39, 61], [40, 64], [41, 65],
+        [42, 63], [43, 66], [44, 67], [45, 69], [46, 69], [47, 70]
+      ]);
+
+      var options = {
+        hAxis: {
+          title: 'Time'
+        },
+        vAxis: {
+          title: 'Temp'
+        },
+        backgroundColor: '#f1f8e9'
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('chart_temp1'));
+      chart.draw(data, options);
+    }
+
+    $(window).resize(function(){
+      chartFun();
+    });
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

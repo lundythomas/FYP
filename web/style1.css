@@ -24,8 +24,12 @@ body {
 
 table, th, td
 {
-    
+
     text-align: center;
     align: center;
     padding: 5px;
+}
+
+.jumbotron {
+  height: 70px;
 }
