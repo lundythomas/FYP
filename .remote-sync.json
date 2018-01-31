@@ -13,6 +13,7 @@
   "watch":[
     "/web/index.html",
     "/web/style1.css",
-    "/web/jsScripts.js"
+    "/web/jsScripts.js",
+    "/web/004.html"
   ]
 }

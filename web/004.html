@@ -3,12 +3,14 @@
 
 <style>
 
-table, th, td {
+table, th, td
+{
    border: 1px solid white;
    text-align: center;
 }
 
-html, body {
+html, body
+{
   background-color: #5F7462;
   width: 100%;
   height: 100%;
@@ -25,164 +27,114 @@ html, body {
 	<title>Tom's test page</title>
 	<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
 	<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 
 </head>
 
 <body>
 
-	<div align="center"><h1>Temperature and Humidity</h1></div>
-	
 	<div align="center">
-	<table>
-		
-		<tr><th>Current Temp &#8451;</th><th>Current Humidity &#37;</th></tr>
-		
-		<tr><td id="tempShow"></td><td id="humShow"></tr>
-	
-	</table>
+
+		<h1>Temperature &#38; Humidity</h1>
+
 	</div>
-	
-	<br>
-	<br>
-	
-	<div id="chart1_div"></div>
+
+	<div align="center">
+		<table>  <!-- Table to show current temperature and humidity. -->
+
+			<tr><th>Current Temp &#8451;</th><th>Current Humidity &#37;</th></tr>
+
+			<tr><td id="tempShow"></td><td id="humShow"></tr>
+
+			<tr><th colspan="2">Data Collected on: </th></tr>
+
+			<tr><td id ="timeCollected"colspan="2"></td></tr>
+
+		</table>
+	</div>
 
     <script>
-	
-	google.charts.load('current', {packages: ['corechart', 'line']});
-			google.charts.setOnLoadCallback(drawBasic);
-			
-	
-	function roundToTwo(num) {    
-    return +(Math.round(num + "e+2")  + "e-2");
-	}
-	
-	var latestTime;
-	var latestData;
-	var updatedData;
-	var currTemp1;
-	var currTemp2;
-	var currHum1;
-	var currHum2;
-	var humNew1;
-	var humNew2;
-	var tempNew1;
-	var tempNew2;
-	
-	var data = new google.visualization.DataTable();
-	var options = {
-				hAxis: {
-				  title: 'Time'
-				},
-				vAxis: {
-				  title: 'Temperature'
-				}
-			  };
 
-			  var chart = new google.visualization.LineChart(document.getElementById('chart1_div'));
-	
-	
-    //$(document).ready(getLatestData);
-	//$(document).ready(updateData);
-	
-	
-	
-	function getLatestData() {
-		$.getJSON("http://sbsrv1.cs.nuim.ie/lora/list.php?node=08-00-AA-00-C0-22-04-08&format=json", function(l) {
-			
+	function roundToTwo(num) // function that rounds to two decimal points.
+	{
+		return +(Math.round(num + "e+2")  + "e-2");
+	}
+
+	var latestTime;
+	var updatedData;
+
+    $(document).ready(getLatestData);
+
+	function getLatestData() //functaion that retrives the lastest data from the db.
+	{
+		$.getJSON("http://sbsrv1.cs.nuim.ie/lora/list.php?node=08-00-AA-00-C0-22-04-08&format=json", function(l)
+		{
+
 			latestTime = l[0].ts;
-			latestData = l[0].data;
-			tempNew1 = latestData.substring(0, 3);
-			humNew1 = latestData.substring(3, 7);
-			
-			currTemp1 = (parseInt(tempNew1, 16)/100);
-			currHum1 = (parseInt(humNew1, 16)/100);
-			
+			var latestData = l[0].data;
+			var len = l[0].data.length;
+
+			if (len==6)  // This separates the data into the temp and humidity.
+			{
+				var tempNew1 = latestData.substring(0, 3);
+				var humNew1 = latestData.substring(3, 7);
+			}
+			else if (len==8) //This is for when the temp and or humidity are above a certain figure.
+			{
+				var tempNew1 = latestData.substring(0, 4);
+				var humNew1 = latestData.substring(4, 8);
+			}
+			else
+			{
+				console.log("There is something wrong with your data array length");
+			}
+
+			var currTemp1 = (parseInt(tempNew1, 16)/100);
+			var currHum1 = (parseInt(humNew1, 16)/100);
+
 			document.getElementById("tempShow").innerHTML = roundToTwo(currTemp1);
 			document.getElementById("humShow").innerHTML = roundToTwo(currHum1);
-			updateChart(currTemp1);
-	});
+			document.getElementById("timeCollected").innerHTML = latestTime;
+		});
 	}
-	
-	function updateData() {
-		$.getJSON("http://sbsrv1.cs.nuim.ie/lora/list.php?node=08-00-AA-00-C0-22-04-08&format=json&since"+latestTime, function(u) {
-			
+
+	function updateData() // Function that updates the data by retriving only the lastest data from the previous time.
+	{
+		$.getJSON("http://sbsrv1.cs.nuim.ie/lora/list.php?node=08-00-AA-00-C0-22-04-08&format=json&since"+latestTime, function(u)
+		{
+
 			updatedData = u[0].data;
-			
-			tempNew2 = updatedData.substring(0, 3);
-			humNew2 = updatedData.substring(3, 7);
-			
-			currTemp2 = (parseInt(tempNew2, 16)/100);
-			currHum2 = (parseInt(humNew2, 16)/100);
-			
+			var updatedTime =  u[0].ts;
+			latestTime = updatedTime;  // sets the most updated time to the lastest time.
+			var len2 = u[0].data.length;
+
+			if (len2==6) // This separates the data into the temp and humidity.
+			{
+				var tempNew2 = updatedData.substring(0, 3);
+				var humNew2 = updatedData.substring(3, 7);
+			}
+			else if (len2==8) //This is for when the temp and or humidity are above a certain figure.
+			{
+				var tempNew2 = updatedData.substring(0, 4);
+				var humNew2 = updatedData.substring(4, 8);
+			}
+			else
+			{
+				console.log("There is something wrong with your data array length");
+			}
+
+			var currTemp2 = (parseInt(tempNew2, 16)/100);
+			var currHum2 = (parseInt(humNew2, 16)/100);
+
 			document.getElementById("tempShow").innerHTML = roundToTwo(currTemp2);
 			document.getElementById("humShow").innerHTML = roundToTwo(currHum2);
-			updateChart(currTemp2);
-		});	
+			document.getElementById("timeCollected").innerHTML = updatedTime;
+
+		});
 	}
-	
-	setInterval(updateData, 5000);
-	
-	
-	function updateChart(newData){
-		data.removeRow(0)
-		for(i=0;i<24;i++){
-			data.setValue(i,0,data.getValue(i,0)-1)
-		}
-		var newData = [24,currTemp2];
-		data.insertRows(data.getNumberOfRows(),newData);
-		chart.draw(data, options);
-	}
-	
-	
-	////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	
-			//google.charts.load('current', {packages: ['corechart', 'line']});
-			//google.charts.setOnLoadCallback(drawBasic);
-			
-			function drawBasic() {
-			 // var data = new google.visualization.DataTable();
-			  
-			  data.addColumn('number', 'X');
-			  data.addColumn('number', 'Temp'); 
-			  
-			  /*var chartData = [25];
-			  for(i=0;i<25;i++){
-					chartData[i]=[i,currentData[i]];
-				}
-				
-				data.addRows(chartData);*/
 
-			  data.addRows([
-				[0, 10],   [1, 10],  [2, 10],  [3, 10],  [4, 10],  [5, 0],
-				[6, 10],  [7, 10],  [8, 33],  [9, 40],  [10, 32], [11, 35],
-				[12, 30], [13, 40], [14, 42], [15, 47], [16, 44], [17, 48],
-				[18, 52], [19, 54], [20, 42], [21, 55], [22, 56], [23, 57],
-				[24, 60]
-			  ]);
-			  
-			  
-			  
+	setInterval(updateData, 10000);  // Interval of 10 seconds between updating data.
 
-			 /* var options = {
-				hAxis: {
-				  title: 'Time'
-				},
-				vAxis: {
-				  title: 'Temperature'
-				}
-			  };
-
-			  var chart = new google.visualization.LineChart(document.getElementById('chart1_div'));*/
-
-			  chart.draw(data, options);
-			}
-	
     </script>
-	
-	
-	
+
 </body>
