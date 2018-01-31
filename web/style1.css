@@ -24,6 +24,8 @@ body {
 
 table, th, td
 {
-  
-   text-align: center;
+    
+    text-align: center;
+    align: center;
+    padding: 5px;
 }
