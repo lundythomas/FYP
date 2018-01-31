@@ -93,7 +93,7 @@ function updateData() // Function that updates the data by retriving only the la
     ////////////////////////////////////////////////////////////////////////////////////
     var data = google.visualization.arrayToDataTable([
       ['Label', 'Value'],
-      ['Temp', currTemp2],
+      ['Temp', currTemp2], 
     ]);
 
     var options = {

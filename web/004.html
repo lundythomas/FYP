@@ -1,140 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
-<style>
+  <head>
 
-table, th, td
-{
-   border: 1px solid white;
-   text-align: center;
-}
+    <title>test -FYP Webpage</title>
 
-html, body
-{
-  background-color: #5F7462;
-  width: 100%;
-  height: 100%;
-  color: white;
-  font-family: Arial;
-}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style1.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="jsScripts.js"></script>
 
-</style>
-
-<head>
-
-<meta charset="utf-8">
-
-	<title>Tom's test page</title>
-	<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-	<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-	<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-
-</head>
+  </head>
 
 <body>
 
-	<div align="center">
+  <div class="jumbotron text-center">
+      <h1>Temp & Humidity Readings</h1>
+  </div>
 
-		<h1>Temperature &#38; Humidity</h1>
+<div id="myTable">
+  <table>
 
-	</div>
+    <tr>
+        <th><h3>Temperature in CS Lab</h3></th><td class="cons" id="test1"></td><td class="h2" id="test1.1" style="color:white;"></td>
+    </tr>
 
-	<div align="center">
-		<table>  <!-- Table to show current temperature and humidity. -->
+    <tr>
+        <th><h3>Humidity in CS Lab</h3></th><td class="cons" id="test2"></td><td class="h2" id="test2.2" style="color:white;"></td>
+    </tr>
 
-			<tr><th>Current Temp &#8451;</th><th>Current Humidity &#37;</th></tr>
+    <tr>
+        <th><h3>Time Data Collected:</h3></th><td colspan="2" class="h3" style="color:white;" id ="timeCollected"></td>
+    </tr>
 
-			<tr><td id="tempShow"></td><td id="humShow"></tr>
+  </table>
 
-			<tr><th colspan="2">Data Collected on: </th></tr>
-
-			<tr><td id ="timeCollected"colspan="2"></td></tr>
-
-		</table>
-	</div>
-
-    <script>
-
-	function roundToTwo(num) // function that rounds to two decimal points.
-	{
-		return +(Math.round(num + "e+2")  + "e-2");
-	}
-
-	var latestTime;
-	var updatedData;
-
-    $(document).ready(getLatestData);
-
-	function getLatestData() //functaion that retrives the lastest data from the db.
-	{
-		$.getJSON("http://sbsrv1.cs.nuim.ie/lora/list.php?node=08-00-AA-00-C0-22-04-08&format=json", function(l)
-		{
-
-			latestTime = l[0].ts;
-			var latestData = l[0].data;
-			var len = l[0].data.length;
-
-			if (len==6)  // This separates the data into the temp and humidity.
-			{
-				var tempNew1 = latestData.substring(0, 3);
-				var humNew1 = latestData.substring(3, 7);
-			}
-			else if (len==8) //This is for when the temp and or humidity are above a certain figure.
-			{
-				var tempNew1 = latestData.substring(0, 4);
-				var humNew1 = latestData.substring(4, 8);
-			}
-			else
-			{
-				console.log("There is something wrong with your data array length");
-			}
-
-			var currTemp1 = (parseInt(tempNew1, 16)/100);
-			var currHum1 = (parseInt(humNew1, 16)/100);
-
-			document.getElementById("tempShow").innerHTML = roundToTwo(currTemp1);
-			document.getElementById("humShow").innerHTML = roundToTwo(currHum1);
-			document.getElementById("timeCollected").innerHTML = latestTime;
-		});
-	}
-
-	function updateData() // Function that updates the data by retriving only the lastest data from the previous time.
-	{
-		$.getJSON("http://sbsrv1.cs.nuim.ie/lora/list.php?node=08-00-AA-00-C0-22-04-08&format=json&since"+latestTime, function(u)
-		{
-
-			updatedData = u[0].data;
-			var updatedTime =  u[0].ts;
-			latestTime = updatedTime;  // sets the most updated time to the lastest time.
-			var len2 = u[0].data.length;
-
-			if (len2==6) // This separates the data into the temp and humidity.
-			{
-				var tempNew2 = updatedData.substring(0, 3);
-				var humNew2 = updatedData.substring(3, 7);
-			}
-			else if (len2==8) //This is for when the temp and or humidity are above a certain figure.
-			{
-				var tempNew2 = updatedData.substring(0, 4);
-				var humNew2 = updatedData.substring(4, 8);
-			}
-			else
-			{
-				console.log("There is something wrong with your data array length");
-			}
-
-			var currTemp2 = (parseInt(tempNew2, 16)/100);
-			var currHum2 = (parseInt(humNew2, 16)/100);
-
-			document.getElementById("tempShow").innerHTML = roundToTwo(currTemp2);
-			document.getElementById("humShow").innerHTML = roundToTwo(currHum2);
-			document.getElementById("timeCollected").innerHTML = updatedTime;
-
-		});
-	}
-
-	setInterval(updateData, 10000);  // Interval of 10 seconds between updating data.
-
-    </script>
+<div class="myFooter">
+  <p>Thomas Lundy - Final Year Project - 2018</p>
+</div>
 
 </body>
+
+</html>
