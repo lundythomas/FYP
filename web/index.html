@@ -59,21 +59,18 @@
   <div class="row align-items-center justify-content-center" align="center">
       <div class="col">
           <h2>Analyse the Data:</h2>
-          <button type="button" class="btn btn-primary">Temp data from last 12Hrs</button>
-          <button type="button" class="btn btn-primary">Humidity data from last 12Hrs</button>
+          <button type="button" class="btn btn-primary" onclick="chartFun1()">Temp data from last 12Hrs</button>
+          <div id="chart_temp1" class="chart"></div>
+          <br>
+          <button type="button" class="btn btn-primary" onclick="chartFun2()">Humidity data from last 12Hrs</button>
+          <div id="chart_hum1" class="chart"></div>
 
       </div>
   </div>
 
     <br>
 
-  <div class="col-lg-12">
-      <div id="chart_temp1" class="chart"></div>
-  </div>
 
-  <div class="col-lg-12">
-      <div id="chart_hum1" class="chart"></div>
-  </div>
 
   <br>
   <br>

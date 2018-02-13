@@ -173,7 +173,7 @@ setInterval(updateData, 10000);  // Interval of 10 seconds between updating data
 
 ////////////////////////////////////////////////////////////////////////////////////////
 
-function chartFun() {
+function chartFun1() {
 
 
       var data = new google.visualization.DataTable();
@@ -181,8 +181,8 @@ function chartFun() {
       data.addColumn('number', 'Temp');
 
       data.addRows([
-        [0, 0],   [1, 10],  [2, 23],  [3, 17],  [4, 18],  [5, 9],
-        [6, 11],  [7, 27],  [8, 33],  [9, 40],  [10, 32], [11, 35],
+        [0, 0],   [1, currTemp2],  [2, currTemp2],  [3, currTemp2],  [4,currTemp2],  [5, currTemp2],
+        [6, currTemp2],  [7, 27],  [8, 33],  [9, 40],  [10, 32], [11, 35],
         [12, 30], [13, 40], [14, 42], [15, 47], [16, 44], [17, 48],
         [18, 52], [19, 54], [20, 42], [21, 55], [22, 56], [23, 57],
         [24, 60], [25, 50], [26, 52], [27, 51], [28, 49], [29, 53],
@@ -206,6 +206,43 @@ function chartFun() {
     }
 
     $(window).resize(function(){
-      chartFun();
+      chartFun1();
     });
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+function chartFun2() {
+
+
+      var data = new google.visualization.DataTable();
+      data.addColumn('number', 'X');
+      data.addColumn('number', 'Humidity');
+
+      data.addRows([
+        [0, 0],   [1, 10],  [2, 23],  [3, 17],  [4, 18],  [5, 9],
+        [6, 11],  [7, 27],  [8, 33],  [9, 40],  [10, 32], [11, 35],
+        [12, 30], [13, 40], [14, 42], [15, 47], [16, 44], [17, 48],
+        [18, 52], [19, 54], [20, 42], [21, 55], [22, 56], [23, 57],
+        [24, 60], [25, 50], [26, 52], [27, 51], [28, 49], [29, 53],
+        [30, 55], [31, 60], [32, 61], [33, 59], [34, 62], [35, 65],
+        [36, 62], [37, 58], [38, 55], [39, 61], [40, 64], [41, 65],
+        [42, 63], [43, 66], [44, 67], [45, 69], [46, 69], [47, 70]
+      ]);
+
+      var options = {
+        hAxis: {
+          title: 'Time'
+        },
+        vAxis: {
+          title: 'Humidity'
+        },
+        backgroundColor: '#f1f8e9'
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('chart_hum1'));
+      chart.draw(data, options);
+    }
+
+    $(window).resize(function(){
+      chartFun2();
+    });
