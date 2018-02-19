@@ -8,6 +8,7 @@
     <meta charset="utf-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://smtpjs.com/v2/smtp.js"></script>
 
     <!-- below are for bootstrap-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -59,10 +60,10 @@
   <div class="row align-items-center justify-content-center" align="center">
       <div class="col">
           <h2>Analyse the Data:</h2>
-          <button type="button" class="btn btn-primary" onclick="chartFun1()">Temp data from last 12Hrs</button>
+          <button type="button" class="btn btn-primary" onclick="chartFun1()">Temp data from last Hour</button>
           <div id="chart_temp1" class="chart"></div>
           <br>
-          <button type="button" class="btn btn-primary" onclick="chartFun2()">Humidity data from last 12Hrs</button>
+          <button type="button" class="btn btn-primary" onclick="chartFun2()">Humidity data from Hour</button>
           <div id="chart_hum1" class="chart"></div>
 
       </div>
