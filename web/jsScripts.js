@@ -306,18 +306,18 @@ function chartFun2() {
 
 function emailTempWarning()
 {
-    Email.send("tomlundycsse@gmail.com",
-    "tomlundycsse@gmail.com",
+    Email.send("fypiotsensor@gmail.com",
+    "tomlundycsse@hotmail.com",
     "Temperaure Warning!!",
     "The Temperature in the room has exceeded 26 Degrees and is now at : " + roundToTwo(currTemp2) + " °C",
-    {token: "ae4fe9c4-63b0-4c5a-8dd4-efbd78108ecf"});
+    {token: "03d36f6a-0899-48bd-88c3-ba7dd5ee3101"});
 }
 
 function emailHumWarning()
 {
-    Email.send("tomlundycsse@gmail.com",
-    "tomlundycsse@gmail.com",
+    Email.send("fypiotsensor@gmail.com",
+    "tomlundycsse@hotmail.com",
     "Humidity Warning!!",
     "The Humidity in the room has exceeded 50 % and is now at : " + roundToTwo(currHum2) + " %" ,
-    {token: "ae4fe9c4-63b0-4c5a-8dd4-efbd78108ecf"});
+    {token: "03d36f6a-0899-48bd-88c3-ba7dd5ee3101"});
 }
