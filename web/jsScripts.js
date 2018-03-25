@@ -1,3 +1,5 @@
+//Author: Thomas Lundy 14729391 CSSE FYP Maynooth University.
+
 var latestTime;
 var updatedData;
 var updatedTime;
